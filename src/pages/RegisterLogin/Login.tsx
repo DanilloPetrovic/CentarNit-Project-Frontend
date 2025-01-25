@@ -57,7 +57,7 @@ const Login = () => {
         }}
       >
         <Typography
-          variant="h2"
+          variant="h1"
           fontSize={{ md: "52px", sm: "48px", xs: "38px" }}
           sx={{
             color: "white",
@@ -92,7 +92,7 @@ const Login = () => {
             input: { color: "white" },
             label: { color: "white" },
             ".MuiFilledInput-root": {
-              backgroundColor: "#1e1e1e",
+              backgroundColor: "#393E46",
             },
           }}
         />
@@ -111,7 +111,7 @@ const Login = () => {
             input: { color: "white" },
             label: { color: "white" },
             ".MuiFilledInput-root": {
-              backgroundColor: "#1e1e1e",
+              backgroundColor: "#393E46",
             },
           }}
         />
@@ -138,6 +138,8 @@ const Login = () => {
               padding: "10px 40px",
               fontSize: "1rem",
               fontWidth: "500",
+              bgcolor: "#4ECCA3",
+              ":hover": { bgcolor: "#387a65" },
             }}
           >
             Log In

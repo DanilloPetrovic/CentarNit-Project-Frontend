@@ -1,4 +1,7 @@
 import axios from "axios";
+import { Dispatch } from "@reduxjs/toolkit";
+import { setData } from "../../store/userSlice";
+import type { AppDispatch } from "../../store/store";
 
 interface UserValues {
   username: string;
@@ -52,19 +55,33 @@ export const loginUser = async (
 };
 
 export const getMyProfile = async (
-  token: string
-): Promise<UserResponse | undefined> => {
+  dispatch: AppDispatch,
+  token: string | null
+): Promise<void> => {
   try {
-    const response = await axios.get<UserResponse>(
-      "http://localhost:3000/users/me",
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-    return response.data;
+    if (!token) {
+      console.error("Token is missing.");
+      return;
+    }
+
+    const response = await axios.get("http://localhost:3000/users/me", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    console.log("Fetched user data:", response.data);
+
+    dispatch(setData(response.data));
   } catch (error: any) {
-    console.error("Get profile error:", error.response?.data || error.message);
+    console.error(
+      "Failed to fetch user profile:",
+      error.response?.data || error.message
+    );
   }
+};
+
+export const logOut = (navigateFN: any) => {
+  localStorage.removeItem("token");
+  navigateFN("/register");
 };

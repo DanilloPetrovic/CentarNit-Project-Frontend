@@ -62,7 +62,7 @@ const Register = () => {
         }}
       >
         <Typography
-          variant="h2"
+          variant="h1"
           fontSize={{ md: "52px", sm: "48px", xs: "38px" }}
           sx={{
             color: "white",
@@ -98,10 +98,17 @@ const Register = () => {
             input: { color: "white" },
             label: { color: "white" },
             ".MuiFilledInput-root": {
-              backgroundColor: "#1e1e1e", // Tamna pozadina
+              backgroundColor: "#393E46",
+              "&:hover": {
+                backgroundColor: "#393E46",
+              },
+              "&.Mui-focused": {
+                backgroundColor: "#393E46",
+              },
             },
           }}
         />
+
         <TextField
           id="email"
           name="email"
@@ -116,7 +123,7 @@ const Register = () => {
             input: { color: "white" },
             label: { color: "white" },
             ".MuiFilledInput-root": {
-              backgroundColor: "#1e1e1e",
+              backgroundColor: "#393E46",
             },
           }}
         />
@@ -135,7 +142,7 @@ const Register = () => {
             input: { color: "white" },
             label: { color: "white" },
             ".MuiFilledInput-root": {
-              backgroundColor: "#1e1e1e",
+              backgroundColor: "#393E46",
             },
           }}
         />
@@ -162,6 +169,8 @@ const Register = () => {
               padding: "10px 40px",
               fontSize: "1rem",
               fontWidth: "500",
+              bgcolor: "#4ECCA3",
+              ":hover": { bgcolor: "#387a65" },
             }}
           >
             Register
