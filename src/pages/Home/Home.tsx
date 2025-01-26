@@ -6,10 +6,13 @@ import TaskModal from "../../components/HomeComponents/TaskForm";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import ListTasks from "../../components/HomeComponents/ListTasks";
+import TaskFilter from "../../components/HomeComponents/TaskFilter";
 
 const Home = () => {
   const user = useSelector((state: RootState) => state.user);
   const token = localStorage.getItem("token");
+
+  const [filter, setFilter] = useState<string>("newest");
 
   const [isTaskFormModalOpen, setIsTaskFormModalOpen] =
     useState<boolean>(false);
@@ -19,12 +22,19 @@ const Home = () => {
   }
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
+    <Box sx={{ display: "flex", maxHeight: "100vh" }}>
       <Box sx={{ width: "20%" }}>
         <Sidebar />
       </Box>
 
-      <Box sx={{ padding: "50px", width: "80%" }}>
+      <Box
+        sx={{
+          padding: "50px",
+          width: "80%",
+          maxHeight: "100vh",
+          overflowY: "scroll",
+        }}
+      >
         <Typography variant="h3" sx={{ color: "white", fontWeight: "bold" }}>
           Tasks
         </Typography>
@@ -36,15 +46,17 @@ const Home = () => {
             sx={{
               padding: "5px 30px",
               fontSize: "1rem",
-              fontWidth: "500",
+              fontWeight: "500",
               bgcolor: "#4ECCA3",
               marginTop: "20px",
               ":hover": { bgcolor: "#387a65" },
             }}
-            onClick={() => setIsTaskFormModalOpen(true)} // Dodato otvaranje modala
+            onClick={() => setIsTaskFormModalOpen(true)}
           >
             Add Task
           </Button>
+
+          <TaskFilter setFilter={setFilter} />
 
           <TaskModal
             user={user}
@@ -52,8 +64,9 @@ const Home = () => {
             onClose={() => setIsTaskFormModalOpen(false)}
             token={token}
           />
+
           <Box>
-            <ListTasks user={user} />
+            <ListTasks user={user} filter={filter} token={token} />
           </Box>
         </Box>
       </Box>

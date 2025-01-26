@@ -1,34 +1,71 @@
 import { User } from "../../interfaces/interfaces";
+import { Box, Typography, Grid } from "@mui/material";
+import TaskCard from "./TaskCard";
+import { useState, useEffect } from "react";
 import {
-  Box,
-  Typography,
-  Grid,
-  Card,
-  CardContent,
-  Button,
-  CardActions,
-} from "@mui/material";
-import { formatDate } from "../../pages/Home/HomeFunctions";
+  getNewestTasks,
+  getTasksByPriority,
+  getTasksByClosestDueDate,
+} from "../../pages/Home/HomeFunctions";
 
 interface PropsTypes {
   user: User | null;
+  filter: string;
+  token: string;
 }
 
-const ListTasks = ({ user }: PropsTypes) => {
+const ListTasks = ({ user, filter, token }: PropsTypes) => {
+  const [arrToList, setArrToList] = useState<any[]>([]);
+
+  console.log(arrToList);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      if (!user) return;
+
+      try {
+        let tasks;
+
+        switch (filter) {
+          case "newest":
+            tasks = await getNewestTasks(token);
+            break;
+          case "lowpriority":
+            tasks = await getTasksByPriority("low", token);
+            break;
+          case "mediumpriority":
+            tasks = await getTasksByPriority("medium", token);
+            break;
+          case "highpriority":
+            tasks = await getTasksByPriority("high", token);
+            break;
+          case "closestduedate":
+            tasks = await getTasksByClosestDueDate(token);
+            break;
+          default:
+            tasks = user.tasks || [];
+        }
+
+        setArrToList(tasks);
+      } catch (error) {
+        console.error("Error fetching tasks:", error);
+      }
+    };
+
+    fetchTasks();
+  }, [filter, user]);
+
   if (!user) {
     return <Typography>No user data available.</Typography>;
   }
 
-  const completeTasks =
-    user.tasks?.filter((task) => task.isDone === true) || [];
-
-  const incompleteTasks =
-    user.tasks?.filter((task) => task.isDone === false) || [];
-
   return (
     <Box sx={{ display: "flex", justifyContent: "center", padding: "20px" }}>
       <Box sx={{ width: "50%" }}>
-        <Typography variant="h4" sx={{ color: "white", marginTop: "50px" }}>
+        <Typography
+          variant="h4"
+          sx={{ color: "white", marginTop: "10px", textAlign: "center" }}
+        >
           Incompleted
         </Typography>
 
@@ -42,58 +79,19 @@ const ListTasks = ({ user }: PropsTypes) => {
             justifyContent: "center",
           }}
         >
-          {incompleteTasks.length > 0 ? (
-            incompleteTasks.map((task) => (
-              <Grid item xs={12} key={task.id}>
-                <Card sx={{ width: "100%", bgcolor: "#393E46" }}>
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h4"
-                      component="div"
-                      sx={{ color: "white", fontWeight: "bold", margin: 0 }}
-                    >
-                      {task.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "rgb(220, 220, 220)", fontSize: "20px" }}
-                    >
-                      {task.description}
-                    </Typography>
-
-                    <Typography sx={{ color: "white", marginTop: "10px" }}>
-                      Created: {formatDate(task.createdAt)}
-                    </Typography>
-                    {task.dueDate ? (
-                      <Typography sx={{ color: "white " }}>
-                        Due Date: {formatDate(task.dueDate)}
-                      </Typography>
-                    ) : null}
-                  </CardContent>
-                  <CardActions>
-                    <Button size="large" sx={{ color: "#4ECCA3" }}>
-                      Completed
-                    </Button>
-                    <Button size="large" sx={{ color: "#4ECCA3" }}>
-                      Delete
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))
-          ) : (
-            <Box sx={{ textAlign: "center", width: "100%", color: "white" }}>
-              <Typography variant="h5" sx={{ color: "White" }}>
-                No complete tasks found.
-              </Typography>
-            </Box>
-          )}
+          {arrToList
+            .filter((task) => task.isDone === false)
+            .map((task) => (
+              <TaskCard task={task} />
+            ))}
         </Grid>
       </Box>
 
       <Box sx={{ width: "50%" }}>
-        <Typography variant="h4" sx={{ color: "white", marginTop: "50px" }}>
+        <Typography
+          variant="h4"
+          sx={{ color: "white", marginTop: "10px", textAlign: "center" }}
+        >
           Completed
         </Typography>
 
@@ -107,53 +105,11 @@ const ListTasks = ({ user }: PropsTypes) => {
             justifyContent: "center",
           }}
         >
-          {completeTasks.length > 0 ? (
-            completeTasks.map((task) => (
-              <Grid item xs={12} key={task.id}>
-                <Card sx={{ width: "100%", bgcolor: "#393E46" }}>
-                  <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h4"
-                      component="div"
-                      sx={{ color: "white", fontWeight: "bold", margin: 0 }}
-                    >
-                      {task.title}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      sx={{ color: "rgb(220, 220, 220)", fontSize: "20px" }}
-                    >
-                      {task.description}
-                    </Typography>
-
-                    <Typography sx={{ color: "white", marginTop: "10px" }}>
-                      Created: {formatDate(task.createdAt)}
-                    </Typography>
-                    {task.dueDate ? (
-                      <Typography sx={{ color: "white " }}>
-                        Due Date: {formatDate(task.dueDate)}
-                      </Typography>
-                    ) : null}
-                  </CardContent>
-                  <CardActions>
-                    <Button size="large" sx={{ color: "#4ECCA3" }}>
-                      Incompleted
-                    </Button>
-                    <Button size="large" sx={{ color: "#4ECCA3" }}>
-                      Delete
-                    </Button>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))
-          ) : (
-            <Box sx={{ textAlign: "center", width: "100%" }}>
-              <Typography variant="h5" sx={{ color: "White" }}>
-                No complete tasks found.
-              </Typography>
-            </Box>
-          )}
+          {arrToList
+            .filter((task) => task.isDone === true)
+            .map((task) => (
+              <TaskCard task={task} />
+            ))}
         </Grid>
       </Box>
     </Box>

@@ -70,8 +70,6 @@ export const getMyProfile = async (
       },
     });
 
-    console.log("Fetched user data:", response.data);
-
     dispatch(setData(response.data));
   } catch (error: any) {
     console.error(
