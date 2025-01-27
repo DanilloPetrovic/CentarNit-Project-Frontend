@@ -17,8 +17,6 @@ interface PropsTypes {
 const ListTasks = ({ user, filter, token }: PropsTypes) => {
   const [arrToList, setArrToList] = useState<any[]>([]);
 
-  console.log(arrToList);
-
   useEffect(() => {
     const fetchTasks = async () => {
       if (!user) return;
@@ -28,19 +26,19 @@ const ListTasks = ({ user, filter, token }: PropsTypes) => {
 
         switch (filter) {
           case "newest":
-            tasks = await getNewestTasks(token);
+            tasks = await getNewestTasks(token, user.id);
             break;
           case "lowpriority":
-            tasks = await getTasksByPriority("low", token);
+            tasks = await getTasksByPriority("low", token, user.id);
             break;
           case "mediumpriority":
-            tasks = await getTasksByPriority("medium", token);
+            tasks = await getTasksByPriority("medium", token, user.id);
             break;
           case "highpriority":
-            tasks = await getTasksByPriority("high", token);
+            tasks = await getTasksByPriority("high", token, user.id);
             break;
           case "closestduedate":
-            tasks = await getTasksByClosestDueDate(token);
+            tasks = await getTasksByClosestDueDate(token, user.id);
             break;
           default:
             tasks = user.tasks || [];
@@ -79,11 +77,11 @@ const ListTasks = ({ user, filter, token }: PropsTypes) => {
             justifyContent: "center",
           }}
         >
-          {arrToList
-            .filter((task) => task.isDone === false)
-            .map((task) => (
-              <TaskCard task={task} />
-            ))}
+          {arrToList !== null
+            ? arrToList
+                .filter((task) => task.isDone === false)
+                .map((task) => <TaskCard task={task} key={task.id} />)
+            : null}
         </Grid>
       </Box>
 
@@ -105,11 +103,11 @@ const ListTasks = ({ user, filter, token }: PropsTypes) => {
             justifyContent: "center",
           }}
         >
-          {arrToList
-            .filter((task) => task.isDone === true)
-            .map((task) => (
-              <TaskCard task={task} />
-            ))}
+          {arrToList !== null
+            ? arrToList
+                .filter((task) => task.isDone === true)
+                .map((task) => <TaskCard task={task} key={task.id} />)
+            : null}
         </Grid>
       </Box>
     </Box>

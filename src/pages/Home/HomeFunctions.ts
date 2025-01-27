@@ -5,7 +5,7 @@ interface valuesType {
   description: string;
   priority: string;
   dueDate: string | null;
-  userId: number;
+  userId: number | null;
 }
 
 export const createTask = async (values: valuesType, token: string) => {
@@ -73,24 +73,31 @@ export const deleteTask = async (
   }
 };
 
-export const getAllTasks = async (token: string) => {
+export const getAllTasks = async (token: string, userId: number | null) => {
   try {
-    const alltasks = await axios.get("http://localhost:3000/task/getalltasks", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const alltasks = await axios.get(
+      `http://localhost:3000/task/getalltasks/${userId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
     return alltasks.data;
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 
-export const getCompletedTasks = async (token: string) => {
+export const getCompletedTasks = async (
+  token: string,
+  userId: number | null
+) => {
   try {
     const completedTasks = await axios.get(
-      "http://localhost:3000/task/getcompletedtasks",
+      `http://localhost:3000/task/getcompletedtasks/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -101,13 +108,17 @@ export const getCompletedTasks = async (token: string) => {
     return completedTasks.data;
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 
-export const getIncompletedTasks = async (token: string) => {
+export const getIncompletedTasks = async (
+  token: string,
+  userId: number | null
+) => {
   try {
     const incompletedTasks = await axios.get(
-      "http://localhost:3000/task/getcompletedtasks",
+      `http://localhost:3000/task/getcompletedtasks/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -118,13 +129,14 @@ export const getIncompletedTasks = async (token: string) => {
     return incompletedTasks.data;
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 
-export const getNewestTasks = async (token: string) => {
+export const getNewestTasks = async (token: string, userId: number | null) => {
   try {
     const newestTasks = await axios.get(
-      "http://localhost:3000/task/getnewesttasks",
+      `http://localhost:3000/task/getnewesttasks/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -135,13 +147,18 @@ export const getNewestTasks = async (token: string) => {
     return newestTasks.data;
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 
-export const getTasksByPriority = async (priority: string, token: string) => {
+export const getTasksByPriority = async (
+  priority: string,
+  token: string,
+  userId: number | null
+) => {
   try {
     const tasksByPriority = await axios.get(
-      `http://localhost:3000/task/gettasksbypriority/${priority}`,
+      `http://localhost:3000/task/gettasksbypriority/${priority}/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -152,13 +169,17 @@ export const getTasksByPriority = async (priority: string, token: string) => {
     return tasksByPriority.data;
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 
-export const getTasksByClosestDueDate = async (token: string) => {
+export const getTasksByClosestDueDate = async (
+  token: string,
+  userId: number | null
+) => {
   try {
     const tasksByClosestDueDate = await axios.get(
-      `http://localhost:3000/task/gettasksbyclosestduedate`,
+      `http://localhost:3000/task/gettasksbyclosestduedate/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -169,6 +190,7 @@ export const getTasksByClosestDueDate = async (token: string) => {
     return tasksByClosestDueDate.data;
   } catch (error) {
     console.log(error);
+    return [];
   }
 };
 

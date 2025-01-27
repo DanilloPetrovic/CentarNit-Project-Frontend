@@ -1,5 +1,4 @@
 import axios from "axios";
-import { Dispatch } from "@reduxjs/toolkit";
 import { setData } from "../../store/userSlice";
 import type { AppDispatch } from "../../store/store";
 
