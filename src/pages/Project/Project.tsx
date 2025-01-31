@@ -7,9 +7,12 @@ import { RootState } from "../../store/store";
 import { useGetAllUsers } from "./ProjectFunctionts";
 import { useDispatch } from "react-redux";
 import { getMyProfile } from "../RegisterLogin/RegisterLoginFunctions";
+import ProjectFilter from "../../components/ProjectComponents/ProjectFilter";
+import ListProjects from "../../components/ProjectComponents/ListProjects";
 
 const Project = () => {
   const [allUsers, setAllUsers] = useState<any[]>([]);
+  const [filter, setFilter] = useState<string>("all");
   const user = useSelector((state: RootState) => state.user);
   const token = localStorage.getItem("token");
   const [isProjectModalOpen, setIsProjectModalOpen] = useState<boolean>(false);
@@ -27,11 +30,10 @@ const Project = () => {
     }
   }, [dispatch]);
 
-  const {
-    data: users,
-    isLoading: usersLoading,
-    isError: usersError,
-  } = useGetAllUsers(user?.id && token ? user.id : null, token);
+  const { data: users } = useGetAllUsers(
+    user?.id && token ? user.id : null,
+    token
+  );
 
   useEffect(() => {
     if (users) {
@@ -84,6 +86,9 @@ const Project = () => {
           token={token}
           allUsers={allUsers}
         />
+
+        <ProjectFilter setFilter={setFilter} />
+        <ListProjects user={user} filter={filter} token={token} />
       </Box>
     </Box>
   );

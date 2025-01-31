@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { useState } from "react";
 import UserList from "./UserList";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { getMyProfile } from "../../pages/RegisterLogin/RegisterLoginFunctions";
 
 interface PropsTypes {
   user: User | null;
@@ -31,6 +33,7 @@ const CreateProjectModal = ({
   allUsers,
 }: PropsTypes) => {
   const [searchValue, setSearchValue] = useState<string>("");
+  const dispatch = useDispatch();
 
   const formik = useFormik<InitialValuesTypes>({
     initialValues: {
@@ -67,6 +70,7 @@ const CreateProjectModal = ({
             }
           );
 
+          await getMyProfile(dispatch, token);
           onClose();
           formik.resetForm();
           return response.data;
@@ -93,7 +97,7 @@ const CreateProjectModal = ({
           }}
         >
           <Typography variant="h6" color="white">
-            Add Task
+            Create Project
           </Typography>
 
           <TextField

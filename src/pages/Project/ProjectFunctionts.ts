@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 export interface InitialValuesTypes {
   title: string;
@@ -64,5 +64,61 @@ export const useGetAllUsers = (id: number | null, token: string | null) => {
   });
 };
 
+export const getAllProjects = async (idProp: number | null, token: string) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/project/getallprojectnofilter/${idProp}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getProjectsThatCreatedByMe = async (
+  idProp: number | null,
+  token: string
+) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/project/getallproject/${idProp}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getAllMyProjects = async (
+  idProp: number | null,
+  token: string
+) => {
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/project/getprojectthatcreatedbyme/${idProp}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 // itekli token
 // number | null kad cekam id ili usera

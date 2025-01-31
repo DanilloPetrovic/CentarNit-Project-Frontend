@@ -82,9 +82,17 @@ const ListTasks = ({ user, filter, token }: PropsTypes) => {
             justifyContent: "start",
           }}
         >
-          {arrToList !== null
-            ? arrToList.map((task) => <TaskCard task={task} key={task.id} />)
-            : null}
+          {arrToList !== null && arrToList.length > 0 ? (
+            arrToList.map((task) => <TaskCard task={task} key={task.id} />)
+          ) : (
+            <Box sx={{ width: "100%" }}>
+              <Typography
+                sx={{ color: "white", fontSize: "2rem", textAlign: "center" }}
+              >
+                There is not tasks
+              </Typography>
+            </Box>
+          )}
         </Grid>
       </Box>
     </Box>
