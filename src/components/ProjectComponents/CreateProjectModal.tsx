@@ -47,11 +47,19 @@ const CreateProjectModal = ({
     }),
 
     onSubmit: async (values: InitialValuesTypes) => {
+      const data: InitialValuesTypes = {
+        title: values.title,
+        description: values.description,
+        createdById: values.createdById,
+        participants: values.participants,
+        deadline: values.deadline === "" ? null : values.deadline,
+      };
+
       if (values.participants.length > 1) {
         try {
           const response = await axios.post(
             "http://localhost:3000/project/createproject",
-            values,
+            data,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

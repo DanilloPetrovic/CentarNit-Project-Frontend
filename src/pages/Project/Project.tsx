@@ -5,12 +5,27 @@ import { Box, Typography, Button } from "@mui/material";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import { useGetAllUsers } from "./ProjectFunctionts";
+import { useDispatch } from "react-redux";
+import { getMyProfile } from "../RegisterLogin/RegisterLoginFunctions";
 
 const Project = () => {
   const [allUsers, setAllUsers] = useState<any[]>([]);
   const user = useSelector((state: RootState) => state.user);
   const token = localStorage.getItem("token");
   const [isProjectModalOpen, setIsProjectModalOpen] = useState<boolean>(false);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const fetchProfile = async () => {
+        await getMyProfile(dispatch, token);
+      };
+
+      fetchProfile();
+    }
+  }, [dispatch]);
 
   const {
     data: users,

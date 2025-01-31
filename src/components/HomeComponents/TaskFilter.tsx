@@ -13,7 +13,7 @@ interface TaskFilterPropsTypes {
 }
 
 const TaskFilter = ({ setFilter }: TaskFilterPropsTypes) => {
-  const [selectedFilter, setSelectedFilter] = useState("newest");
+  const [selectedFilter, setSelectedFilter] = useState("all");
 
   useEffect(() => {
     const filter = filters.find((filter) => filter.value === selectedFilter);
@@ -23,6 +23,15 @@ const TaskFilter = ({ setFilter }: TaskFilterPropsTypes) => {
   }, [selectedFilter, setFilter]);
 
   const filters = [
+    { name: "All", value: "all" },
+    {
+      name: "Completed",
+      value: "completed",
+    },
+    {
+      name: "Incompleted",
+      value: "incompleted",
+    },
     { value: "newest", name: "Newest" },
     {
       name: "Low priority",

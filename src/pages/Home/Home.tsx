@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
@@ -7,13 +8,28 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../store/store";
 import ListTasks from "../../components/HomeComponents/ListTasks";
 import TaskFilter from "../../components/HomeComponents/TaskFilter";
+import { useDispatch } from "react-redux";
+import { getMyProfile } from "../RegisterLogin/RegisterLoginFunctions";
 
 const Home = () => {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.user);
   const token = localStorage.getItem("token");
   const [filter, setFilter] = useState<string>("newest");
   const [isTaskFormModalOpen, setIsTaskFormModalOpen] =
     useState<boolean>(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      const fetchProfile = async () => {
+        await getMyProfile(dispatch, token);
+      };
+
+      fetchProfile();
+    }
+  }, [dispatch]);
 
   if (!token) {
     return <Navigate to="/register" replace={true} />;

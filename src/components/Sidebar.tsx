@@ -1,5 +1,6 @@
 import {
   Box,
+  Button,
   List,
   ListItem,
   ListItemButton,
@@ -67,6 +68,14 @@ const Sidebar = () => {
             </ListItem>
           ))}
         </List>
+        <Button
+          onClick={() => {
+            localStorage.removeItem("token");
+            navigate("/register");
+          }}
+        >
+          Log out
+        </Button>
       </Box>
       <Box sx={{ height: "50%" }}></Box>
     </Box>

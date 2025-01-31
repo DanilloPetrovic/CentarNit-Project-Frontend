@@ -1,9 +1,16 @@
 import axios from "axios";
-import { InitialValuesTypes } from "../../components/ProjectComponents/CreateProjectModal";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 
+export interface InitialValuesTypes {
+  title: string;
+  description: string;
+  createdById: number;
+  participants: number[];
+  deadline: string | null;
+}
+
 export const createProject = async (
-  values: initialValuesTypes,
+  values: InitialValuesTypes,
   token: string | null
 ) => {
   try {
@@ -27,26 +34,6 @@ export const createProject = async (
   } catch (error) {
     console.log(error);
   }
-};
-
-export const useCreateProject = () => {
-  const queryClient = useQueryClient();
-
-  return useMutation({
-    mutationFn: ({
-      values,
-      token,
-    }: {
-      values: initialValuesTypes;
-      token: string | null;
-    }) => {
-      return createProject(values, token);
-    },
-
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["project"] });
-    },
-  });
 };
 
 export const getAllUsers = async (

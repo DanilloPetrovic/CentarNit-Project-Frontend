@@ -118,7 +118,7 @@ export const getIncompletedTasks = async (
 ) => {
   try {
     const incompletedTasks = await axios.get(
-      `http://localhost:3000/task/getcompletedtasks/${userId}`,
+      `http://localhost:3000/task/getincompletedtasks/${userId}`,
       {
         headers: {
           Authorization: `Bearer ${token}`,

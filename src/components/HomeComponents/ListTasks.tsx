@@ -6,6 +6,9 @@ import {
   getNewestTasks,
   getTasksByPriority,
   getTasksByClosestDueDate,
+  getCompletedTasks,
+  getIncompletedTasks,
+  getAllTasks,
 } from "../../pages/Home/HomeFunctions";
 
 interface PropsTypes {
@@ -25,6 +28,9 @@ const ListTasks = ({ user, filter, token }: PropsTypes) => {
         let tasks;
 
         switch (filter) {
+          case "all":
+            tasks = await getAllTasks(token, user.id);
+            break;
           case "newest":
             tasks = await getNewestTasks(token, user.id);
             break;
@@ -39,6 +45,12 @@ const ListTasks = ({ user, filter, token }: PropsTypes) => {
             break;
           case "closestduedate":
             tasks = await getTasksByClosestDueDate(token, user.id);
+            break;
+          case "completed":
+            tasks = await getCompletedTasks(token, user.id);
+            break;
+          case "incompleted":
+            tasks = await getIncompletedTasks(token, user.id);
             break;
           default:
             tasks = user.tasks || [];
@@ -59,14 +71,7 @@ const ListTasks = ({ user, filter, token }: PropsTypes) => {
 
   return (
     <Box sx={{ display: "flex", justifyContent: "center", padding: "20px" }}>
-      <Box sx={{ width: "50%" }}>
-        <Typography
-          variant="h4"
-          sx={{ color: "white", marginTop: "10px", textAlign: "center" }}
-        >
-          Incompleted
-        </Typography>
-
+      <Box sx={{ width: "100%" }}>
         <Grid
           container
           spacing={2}
@@ -74,39 +79,11 @@ const ListTasks = ({ user, filter, token }: PropsTypes) => {
             width: "100%",
             marginTop: "25px",
             display: "flex",
-            justifyContent: "center",
+            justifyContent: "start",
           }}
         >
           {arrToList !== null
-            ? arrToList
-                .filter((task) => task.isDone === false)
-                .map((task) => <TaskCard task={task} key={task.id} />)
-            : null}
-        </Grid>
-      </Box>
-
-      <Box sx={{ width: "50%" }}>
-        <Typography
-          variant="h4"
-          sx={{ color: "white", marginTop: "10px", textAlign: "center" }}
-        >
-          Completed
-        </Typography>
-
-        <Grid
-          container
-          spacing={2}
-          sx={{
-            width: "100%",
-            marginTop: "25px",
-            display: "flex",
-            justifyContent: "center",
-          }}
-        >
-          {arrToList !== null
-            ? arrToList
-                .filter((task) => task.isDone === true)
-                .map((task) => <TaskCard task={task} key={task.id} />)
+            ? arrToList.map((task) => <TaskCard task={task} key={task.id} />)
             : null}
         </Grid>
       </Box>

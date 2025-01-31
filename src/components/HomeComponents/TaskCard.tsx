@@ -28,8 +28,10 @@ const TaskCard = ({ task }: propsTypes) => {
   }
 
   return (
-    <Grid item xs={12} key={task.id}>
-      <Card sx={{ width: "100%", bgcolor: "#393E46" }}>
+    <Grid item xs={6} key={task.id}>
+      <Card
+        sx={{ width: "100%", bgcolor: task.isDone ? "#32353d" : "#393E46" }}
+      >
         <CardContent>
           <Typography
             gutterBottom
@@ -58,6 +60,14 @@ const TaskCard = ({ task }: propsTypes) => {
               Due Date: {formatDate(task.dueDate)}
             </Typography>
           ) : null}
+          <Typography
+            sx={{
+              color: "white",
+              fontSize: "1.1rem",
+            }}
+          >
+            Is Done: {task.isDone === true ? "Completed" : "Incompleted"}
+          </Typography>
         </CardContent>
         <CardActions>
           {task.isDone === false ? (
@@ -69,7 +79,7 @@ const TaskCard = ({ task }: propsTypes) => {
                 getMyProfile(dispatch, token);
               }}
             >
-              Completed
+              Complete
             </Button>
           ) : (
             <Button
@@ -80,7 +90,7 @@ const TaskCard = ({ task }: propsTypes) => {
                 getMyProfile(dispatch, token);
               }}
             >
-              Incompleted
+              Incomplete
             </Button>
           )}
           <Button
