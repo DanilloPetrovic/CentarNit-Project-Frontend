@@ -9,6 +9,9 @@ import { getMyProfile } from "../RegisterLogin/RegisterLoginFunctions";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Sidebar from "../../components/Sidebar";
+import SingleProjectHeader from "../../components/SingleProjectComponents/SingleProjectHeader";
+import SingleProjectButtons from "../../components/SingleProjectComponents/SingleProjectButtons";
+import SingleProjectTasks from "../../components/SingleProjectComponents/SingleProjectTasks";
 
 const SingleProject = () => {
   const { id } = useParams();
@@ -16,6 +19,7 @@ const SingleProject = () => {
   const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
+  const [tasks, setTasks] = useState<any[]>([]);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,10 +33,10 @@ const SingleProject = () => {
     }
   }, [dispatch]);
 
-  const getProject = async (userId: number | null, token: string | null) => {
+  const getProject = async (projectId: number | null, token: string | null) => {
     try {
       const response = await axios.get(
-        `http://localhost:3000/project/getproject/${userId}`,
+        `http://localhost:3000/project/getproject/${projectId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -47,8 +51,12 @@ const SingleProject = () => {
   };
 
   useEffect(() => {
-    getProject(Number(id), token);
-  }, [user, token]);
+    if (token) {
+      getProject(Number(id), token);
+    }
+  }, [id, token]);
+
+  console.log(project);
 
   return (
     <Box sx={{ display: "flex", maxHeight: "100vh" }}>
@@ -63,7 +71,21 @@ const SingleProject = () => {
           maxHeight: "100vh",
           overflowY: "scroll",
         }}
-      ></Box>
+      >
+        {project ? <SingleProjectHeader project={project} /> : null}
+
+        {project ? (
+          <SingleProjectButtons
+            user={user}
+            project={project}
+            setTasks={setTasks}
+          />
+        ) : null}
+
+        {project ? (
+          <SingleProjectTasks tasks={tasks} setTasks={setTasks} />
+        ) : null}
+      </Box>
     </Box>
   );
 };
