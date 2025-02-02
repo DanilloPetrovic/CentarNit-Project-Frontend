@@ -13,7 +13,7 @@ const SingleProjectHeader = ({ project }: propType) => {
         {project?.title}
       </Typography>
 
-      <Typography sx={{ color: "darkgrey", fontSize: "23px", width: "50%" }}>
+      <Typography sx={{ color: "lightgrey", fontSize: "23px", width: "50%" }}>
         {project?.description}
       </Typography>
 

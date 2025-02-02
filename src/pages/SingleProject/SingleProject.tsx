@@ -4,10 +4,9 @@ import { useDispatch } from "react-redux";
 import { RootState } from "../../store/store";
 import { Box } from "@mui/material";
 import { useState } from "react";
-import { Project } from "../../interfaces/interfaces";
 import { getMyProfile } from "../RegisterLogin/RegisterLoginFunctions";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import { getProject } from "./SingleProjectFunctions";
 import Sidebar from "../../components/Sidebar";
 import SingleProjectHeader from "../../components/SingleProjectComponents/SingleProjectHeader";
 import SingleProjectButtons from "../../components/SingleProjectComponents/SingleProjectButtons";
@@ -15,11 +14,13 @@ import SingleProjectTasks from "../../components/SingleProjectComponents/SingleP
 
 const SingleProject = () => {
   const { id } = useParams();
-  const [project, setProject] = useState<Project | null>(null);
-  const user = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
-  const [tasks, setTasks] = useState<any[]>([]);
+
+  const [project, setProject] = useState<any>(null);
+  const user = useSelector((state: RootState) => state.user);
+
+  console.log(project);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -33,30 +34,16 @@ const SingleProject = () => {
     }
   }, [dispatch]);
 
-  const getProject = async (projectId: number | null, token: string | null) => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3000/project/getproject/${projectId}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      setProject(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
-    if (token) {
-      getProject(Number(id), token);
-    }
-  }, [id, token]);
+    const fetchProject = async () => {
+      if (token && id) {
+        const projectData = await getProject(Number(id), token);
+        setProject(projectData);
+      }
+    };
 
-  console.log(project);
+    fetchProject();
+  }, [id, token]);
 
   return (
     <Box sx={{ display: "flex", maxHeight: "100vh" }}>
@@ -78,13 +65,12 @@ const SingleProject = () => {
           <SingleProjectButtons
             user={user}
             project={project}
-            setTasks={setTasks}
+            getProject={getProject}
+            setProject={setProject}
           />
         ) : null}
 
-        {project ? (
-          <SingleProjectTasks tasks={tasks} setTasks={setTasks} />
-        ) : null}
+        {project ? <SingleProjectTasks tasks={project.tasks} /> : null}
       </Box>
     </Box>
   );

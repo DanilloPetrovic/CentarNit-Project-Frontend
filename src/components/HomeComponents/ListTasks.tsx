@@ -83,7 +83,9 @@ const ListTasks = ({ user, filter, token }: PropsTypes) => {
           }}
         >
           {arrToList !== null && arrToList.length > 0 ? (
-            arrToList.map((task) => <TaskCard task={task} key={task.id} />)
+            arrToList
+              .filter((task) => task.projectId === null)
+              .map((task) => <TaskCard task={task} key={task.id} />)
           ) : (
             <Box sx={{ width: "100%" }}>
               <Typography

@@ -158,7 +158,7 @@ const Register = () => {
             ":hover": { textDecoration: "underline" },
           }}
         >
-          You don't have an account?
+          You already have an account?
         </Typography>
 
         <Box sx={{ display: "flex", justifyContent: "center" }}>

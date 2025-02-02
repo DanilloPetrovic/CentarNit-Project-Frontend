@@ -1,26 +1,11 @@
 import { Grid, Box, Typography } from "@mui/material";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
 import TaskCard from "../HomeComponents/TaskCard";
-import { getTasks } from "../../pages/SingleProject/SingleProjectFunctions";
 
 interface SingleProjectTasksProps {
   tasks: any[];
-  setTasks: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
-const SingleProjectTasks = ({ tasks, setTasks }: SingleProjectTasksProps) => {
-  const { id } = useParams();
-  const token = localStorage.getItem("token");
-
-  useEffect(() => {
-    if (token) {
-      getTasks(Number(id), setTasks, token);
-    }
-  }, [id, token]);
-
-  console.log(tasks);
-
+const SingleProjectTasks = ({ tasks }: SingleProjectTasksProps) => {
   return (
     <Box sx={{ padding: "20px" }}>
       <Box width="100%">
