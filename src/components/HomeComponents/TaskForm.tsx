@@ -15,12 +15,15 @@ import { User } from "../../interfaces/interfaces";
 import { createTask } from "../../pages/Home/HomeFunctions";
 import { getMyProfile } from "../../pages/RegisterLogin/RegisterLoginFunctions";
 import { useDispatch } from "react-redux";
+import { getTasks } from "../../pages/SingleProject/SingleProjectFunctions";
 
 interface TaskFormProps {
   user: User | null;
   isOpen: boolean;
   onClose: () => void;
   token: string;
+  projectId: number | null;
+  setTasks: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 interface ValuesType {
@@ -29,10 +32,17 @@ interface ValuesType {
   priority: string;
   dueDate: string | null;
   userId: number;
-  projectId: null;
+  projectId: number | null;
 }
 
-const TaskModal = ({ user, isOpen, onClose, token }: TaskFormProps) => {
+const TaskModal = ({
+  user,
+  isOpen,
+  onClose,
+  token,
+  projectId,
+  setTasks,
+}: TaskFormProps) => {
   const dispatch = useDispatch();
 
   const formik = useFormik({
@@ -40,7 +50,7 @@ const TaskModal = ({ user, isOpen, onClose, token }: TaskFormProps) => {
       title: "",
       description: "",
       priority: "medium",
-      projectId: "",
+      projectId: projectId,
       dueDate: "",
     },
     validationSchema: Yup.object({
@@ -48,7 +58,7 @@ const TaskModal = ({ user, isOpen, onClose, token }: TaskFormProps) => {
         .required("Title is required")
         .max(20, "Max 20 characters"),
       description: Yup.string().max(
-        150,
+        100,
         "Description must be less than 100 characters"
       ),
       priority: Yup.string().required("Priority is required"),
@@ -60,12 +70,13 @@ const TaskModal = ({ user, isOpen, onClose, token }: TaskFormProps) => {
         priority: values.priority,
         dueDate: values.dueDate === "" ? null : values.dueDate,
         userId: Number(user?.id),
-        projectId: null,
+        projectId: values.projectId,
       };
 
       await createTask(data, token);
-
       await getMyProfile(dispatch, token);
+
+      await getTasks(Number(values.projectId), setTasks, token);
 
       console.log(data);
 

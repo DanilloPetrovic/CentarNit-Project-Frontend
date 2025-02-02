@@ -93,6 +93,10 @@ const TaskCard = ({ task }: propsTypes) => {
               Incomplete
             </Button>
           )}
+          {task.projectId ? (
+            <Button sx={{ color: "#4ECCA3" }}>Comments</Button>
+          ) : null}
+
           <Button
             size="large"
             sx={{ color: "#4ECCA3" }}

@@ -77,6 +77,7 @@ const Home = () => {
             isOpen={isTaskFormModalOpen}
             onClose={() => setIsTaskFormModalOpen(false)}
             token={token}
+            projectId={null}
           />
 
           <Box>

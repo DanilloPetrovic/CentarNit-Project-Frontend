@@ -46,7 +46,7 @@ const CreateProjectModal = ({
 
     validationSchema: Yup.object({
       title: Yup.string().required("required").max(20, "max 20 characters"),
-      description: Yup.string().max(150, "max 150 characters"),
+      description: Yup.string().max(100, "max 100 characters"),
     }),
 
     onSubmit: async (values: InitialValuesTypes) => {

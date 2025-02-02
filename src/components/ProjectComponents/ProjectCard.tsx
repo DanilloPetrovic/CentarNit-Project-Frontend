@@ -36,7 +36,7 @@ const ProjectCard = ({ user, project }: propsTypes) => {
           </Typography>
           <Typography
             variant="body2"
-            sx={{ color: "rgb(220, 220, 220)", fontSize: "20px" }}
+            sx={{ color: "rgb(220, 220, 220)", fontSize: "18px" }}
           >
             {project.description}
           </Typography>
@@ -64,7 +64,7 @@ const ProjectCard = ({ user, project }: propsTypes) => {
               marginTop: "10px",
             }}
           >
-            Is Done: {project.isDone === true ? "Completed" : "Incompleted"}
+            {project.isDone === true ? "Completed" : "Incompleted"}
           </Typography>
         </CardContent>
       </Card>
