@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getProject } from "../SingleProject/SingleProjectFunctions";
 
 interface valuesType {
   title: string;
@@ -8,24 +9,26 @@ interface valuesType {
   userId: number | null;
 }
 
-export const createTask = async (values: valuesType, token: string) => {
+export const createTask = async (
+  values: valuesType,
+  token: string,
+  projectId?: string
+) => {
   try {
     const taskData = {
       ...values,
       dueDate: values.dueDate ? new Date(values.dueDate).toISOString() : null,
     };
 
-    const task = await axios.post(
-      "http://localhost:3000/task/createtask",
-      taskData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    await axios.post("http://localhost:3000/task/createtask", taskData, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-    console.log(task);
+    if (projectId) {
+      await getProject(Number(projectId), token);
+    }
   } catch (error) {
     console.error(error);
   }

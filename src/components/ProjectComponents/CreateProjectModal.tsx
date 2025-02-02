@@ -58,7 +58,7 @@ const CreateProjectModal = ({
         deadline: values.deadline === "" ? null : values.deadline,
       };
 
-      if (values.participants.length > 1) {
+      if (values.participants.length > 1 && values.participants.length < 6) {
         try {
           const response = await axios.post(
             "http://localhost:3000/project/createproject",

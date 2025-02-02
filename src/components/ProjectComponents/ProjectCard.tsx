@@ -23,7 +23,11 @@ const ProjectCard = ({ user, project }: propsTypes) => {
           bgcolor: project.createdById !== user?.id ? "#32353d" : "#393E46",
           cursor: "pointer",
         }}
-        onClick={() => navigate(`/project/${project.id}`)}
+        onClick={() => {
+          if (project.isDone !== true) {
+            navigate(`/project/${project.id}`);
+          }
+        }}
       >
         <CardContent>
           <Typography

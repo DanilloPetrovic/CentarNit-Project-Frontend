@@ -13,16 +13,15 @@ import {
 import Modal from "../Modal";
 import { User } from "../../interfaces/interfaces";
 import { createTask } from "../../pages/Home/HomeFunctions";
-import { getMyProfile } from "../../pages/RegisterLogin/RegisterLoginFunctions";
-import { useDispatch } from "react-redux";
 
-interface TaskFormProps {
+interface ProjectModalProp {
   user: User | null;
   isOpen: boolean;
   onClose: () => void;
   token: string;
   projectId: number | null;
-  setTasks: React.Dispatch<React.SetStateAction<any[]>>;
+  getProject: any;
+  setProject: any;
 }
 
 interface ValuesType {
@@ -34,15 +33,15 @@ interface ValuesType {
   projectId: number | null;
 }
 
-const TaskModal = ({
+const SingleProjectModal = ({
   user,
   isOpen,
   onClose,
   token,
   projectId,
-}: TaskFormProps) => {
-  const dispatch = useDispatch();
-
+  getProject,
+  setProject,
+}: ProjectModalProp) => {
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -72,9 +71,8 @@ const TaskModal = ({
       };
 
       await createTask(data, token);
-      await getMyProfile(dispatch, token);
 
-      console.log(data);
+      await getProject(projectId, token, setProject);
 
       onClose();
       formik.resetForm();
@@ -244,4 +242,4 @@ const TaskModal = ({
   );
 };
 
-export default TaskModal;
+export default SingleProjectModal;

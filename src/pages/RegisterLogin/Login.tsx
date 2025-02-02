@@ -127,7 +127,7 @@ const Login = () => {
             ":hover": { textDecoration: "underline" },
           }}
         >
-          You already have an account?
+          You don't have an account?
         </Typography>
 
         <Box sx={{ display: "flex", justifyContent: "center" }}>
