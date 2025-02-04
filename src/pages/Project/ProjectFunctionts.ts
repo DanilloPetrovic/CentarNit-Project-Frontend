@@ -120,5 +120,29 @@ export const getAllMyProjects = async (
     console.log(error);
   }
 };
-// itekli token
-// number | null kad cekam id ili usera
+
+export const changeParticipants = async (
+  added: number[],
+  removed: number[],
+  token: string,
+  projectIdProp: number
+) => {
+  try {
+    const response = await axios.post(
+      `http://localhost:3000/project/updateparticipants/${projectIdProp}`,
+      {
+        add: added,
+        remove: removed,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};

@@ -36,7 +36,7 @@ export const userSlice = createSlice({
       state.projects = projects;
       state.createdProjects = createdProjects;
     },
-    logout(state) {
+    logout() {
       return { ...initialState };
     },
   },

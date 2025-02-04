@@ -1,5 +1,4 @@
 import axios from "axios";
-import { getProject } from "../SingleProject/SingleProjectFunctions";
 
 interface valuesType {
   title: string;
@@ -9,11 +8,7 @@ interface valuesType {
   userId: number | null;
 }
 
-export const createTask = async (
-  values: valuesType,
-  token: string,
-  projectId?: string
-) => {
+export const createTask = async (values: valuesType, token: string) => {
   try {
     const taskData = {
       ...values,
@@ -25,10 +20,6 @@ export const createTask = async (
         Authorization: `Bearer ${token}`,
       },
     });
-
-    if (projectId) {
-      await getProject(Number(projectId), token);
-    }
   } catch (error) {
     console.error(error);
   }

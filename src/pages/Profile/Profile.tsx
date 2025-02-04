@@ -24,8 +24,6 @@ const Profile = () => {
     }
   }, [dispatch]);
 
-  console.log(user);
-
   return (
     <Box style={{ display: "flex", maxHeight: "100vh" }}>
       <Box style={{ width: "20%" }}>

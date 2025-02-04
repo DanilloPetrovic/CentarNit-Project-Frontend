@@ -1,5 +1,6 @@
 import axios from "axios";
-import { Project } from "../../interfaces/interfaces";
+import { setData } from "../../store/projectSlice";
+import { Dispatch } from "redux";
 
 export const getTasks = async (id: number, setTasks: any, token: string) => {
   try {
@@ -20,17 +21,20 @@ export const getTasks = async (id: number, setTasks: any, token: string) => {
 
 export const getProject = async (
   projectId: number | null,
-  token: string | null
+  token: string | null,
+  dispatch: Dispatch
 ) => {
   if (!projectId || !token) return;
 
   try {
-    const response = await axios.get<Project>(
+    const response = await axios.get(
       `http://localhost:3000/project/getproject/${projectId}`,
       {
         headers: { Authorization: `Bearer ${token}` },
       }
     );
+
+    dispatch(setData(response.data));
 
     return response.data;
   } catch (error) {
