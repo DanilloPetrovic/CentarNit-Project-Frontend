@@ -11,17 +11,11 @@ import SingleProjectParticipants from "./SingleProjectParticipants";
 
 interface propType {
   user: User;
-  project: Project;
-  getProject: any;
-  setProject: any;
+  project: Project | null;
+  allUsers: User[];
 }
 
-const SingleProjectButtons = ({
-  user,
-  project,
-  getProject,
-  setProject,
-}: propType) => {
+const SingleProjectButtons = ({ user, project, allUsers }: propType) => {
   const token = localStorage.getItem("token");
   const [isCreateTaskOpen, setIsCreateTaskOpen] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -61,8 +55,6 @@ const SingleProjectButtons = ({
               onClose={() => setIsCreateTaskOpen(false)}
               token={token}
               projectId={project.id}
-              getProject={getProject}
-              setProject={setProject}
             />
           ) : null}
 
@@ -89,6 +81,7 @@ const SingleProjectButtons = ({
               onClose={() => setIsModalOpen(false)}
               token={token}
               project={project}
+              allUsers={allUsers}
             />
           ) : null}
 

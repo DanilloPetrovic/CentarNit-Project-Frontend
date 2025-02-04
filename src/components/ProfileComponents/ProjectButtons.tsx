@@ -5,8 +5,6 @@ import { useNavigate } from "react-router-dom";
 const ProjectButtons = () => {
   const navigate = useNavigate();
 
-  console.log("first");
-
   return (
     <Box>
       <Button

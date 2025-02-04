@@ -13,6 +13,8 @@ import {
 import Modal from "../Modal";
 import { User } from "../../interfaces/interfaces";
 import { createTask } from "../../pages/Home/HomeFunctions";
+import { getProject } from "../../pages/SingleProject/SingleProjectFunctions";
+import { useDispatch } from "react-redux";
 
 interface ProjectModalProp {
   user: User | null;
@@ -20,8 +22,6 @@ interface ProjectModalProp {
   onClose: () => void;
   token: string;
   projectId: number | null;
-  getProject: any;
-  setProject: any;
 }
 
 interface ValuesType {
@@ -39,9 +39,9 @@ const SingleProjectModal = ({
   onClose,
   token,
   projectId,
-  getProject,
-  setProject,
 }: ProjectModalProp) => {
+  const dispatch = useDispatch();
+
   const formik = useFormik({
     initialValues: {
       title: "",
@@ -71,8 +71,7 @@ const SingleProjectModal = ({
       };
 
       await createTask(data, token);
-
-      await getProject(projectId, token, setProject);
+      await getProject(Number(projectId), token, dispatch);
 
       onClose();
       formik.resetForm();
