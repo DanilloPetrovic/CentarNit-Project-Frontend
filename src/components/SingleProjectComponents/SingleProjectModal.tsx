@@ -11,10 +11,10 @@ import {
   InputLabel,
 } from "@mui/material";
 import Modal from "../Modal";
-import { User } from "../../interfaces/interfaces";
-import { createTask } from "../../pages/Home/HomeFunctions";
-import { getProject } from "../../pages/SingleProject/SingleProjectFunctions";
+import { Project, User } from "../../interfaces/interfaces";
+import { createProjectTask } from "../../pages/SingleProject/SingleProjectFunctions";
 import { useDispatch } from "react-redux";
+import { getProject } from "../../pages/SingleProject/SingleProjectFunctions";
 
 interface ProjectModalProp {
   user: User | null;
@@ -22,6 +22,7 @@ interface ProjectModalProp {
   onClose: () => void;
   token: string;
   projectId: number | null;
+  project: Project;
 }
 
 interface ValuesType {
@@ -39,6 +40,7 @@ const SingleProjectModal = ({
   onClose,
   token,
   projectId,
+  project,
 }: ProjectModalProp) => {
   const dispatch = useDispatch();
 
@@ -47,8 +49,8 @@ const SingleProjectModal = ({
       title: "",
       description: "",
       priority: "medium",
-      projectId: projectId,
       dueDate: "",
+      projectId: projectId,
     },
     validationSchema: Yup.object({
       title: Yup.string()
@@ -61,6 +63,11 @@ const SingleProjectModal = ({
       priority: Yup.string().required("Priority is required"),
     }),
     onSubmit: async (values) => {
+      if (!projectId) {
+        console.error("Project ID is missing!");
+        return;
+      }
+
       const data: ValuesType = {
         title: values.title,
         description: values.description,
@@ -70,8 +77,8 @@ const SingleProjectModal = ({
         projectId: values.projectId,
       };
 
-      await createTask(data, token);
-      await getProject(Number(projectId), token, dispatch);
+      await createProjectTask(data, token);
+      await getProject(project.id, token, dispatch);
 
       onClose();
       formik.resetForm();

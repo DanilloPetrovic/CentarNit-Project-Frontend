@@ -28,7 +28,7 @@ const SingleProjectTasks = ({ tasks }: SingleProjectTasksProps) => {
           }}
         >
           {tasks.length > 0 ? (
-            tasks.map((task) => <TaskCard task={task} key={task.id} />)
+            tasks.map((task) => <TaskCard key={task.id} task={task} />)
           ) : (
             <Box sx={{ width: "100%" }}>
               <Typography

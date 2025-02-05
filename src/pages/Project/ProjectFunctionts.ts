@@ -122,7 +122,7 @@ export const getAllMyProjects = async (
 };
 
 export const changeParticipants = async (
-  added: number[],
+  added: any,
   removed: number[],
   token: string,
   projectIdProp: number

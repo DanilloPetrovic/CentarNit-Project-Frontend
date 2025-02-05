@@ -22,7 +22,6 @@ interface TaskFormProps {
   onClose: () => void;
   token: string;
   projectId: number | null;
-  setTasks: React.Dispatch<React.SetStateAction<any[]>>;
 }
 
 interface ValuesType {

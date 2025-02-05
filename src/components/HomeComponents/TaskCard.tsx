@@ -1,4 +1,4 @@
-import { Task } from "../../interfaces/interfaces";
+import { Project, Task } from "../../interfaces/interfaces";
 import {
   Grid,
   Card,
@@ -14,14 +14,19 @@ import {
   formatDate,
 } from "../../pages/Home/HomeFunctions";
 import { useDispatch } from "react-redux";
+import { getProject } from "../../pages/SingleProject/SingleProjectFunctions";
+import Comments from "../Comments";
+import { useState } from "react";
 
 interface propsTypes {
   task: Task | null;
+  project?: Project;
 }
 
 const TaskCard = ({ task }: propsTypes) => {
   const token = localStorage.getItem("token");
   const dispatch = useDispatch();
+  const [isCommentsOpen, setIsCommentsOpen] = useState<boolean>(false);
 
   if (!task) {
     return null;
@@ -69,47 +74,93 @@ const TaskCard = ({ task }: propsTypes) => {
             Is Done: {task.isDone === true ? "Completed" : "Incompleted"}
           </Typography>
         </CardContent>
-        <CardActions>
-          {task.isDone === false ? (
-            <Button
-              size="large"
-              sx={{ color: "#4ECCA3" }}
-              onClick={() => {
-                taskCompleteOrIncomplete("taskcomplete", task.id, token);
-                getMyProfile(dispatch, token);
-              }}
-            >
-              Complete
-            </Button>
-          ) : (
-            <Button
-              size="large"
-              sx={{ color: "#4ECCA3" }}
-              onClick={() => {
-                taskCompleteOrIncomplete("taskincomplete", task.id, token);
-                getMyProfile(dispatch, token);
-              }}
-            >
-              Incomplete
-            </Button>
-          )}
-          {task.projectId ? (
-            <Button sx={{ color: "#4ECCA3" }}>Comments</Button>
-          ) : null}
+        {task.projectId ? (
+          <CardActions>
+            {task.isDone === false ? (
+              <Button
+                size="large"
+                sx={{ color: "#4ECCA3" }}
+                onClick={() => {
+                  taskCompleteOrIncomplete("taskcomplete", task.id, token);
+                  getProject(task.projectId, token, dispatch);
+                }}
+              >
+                Complete
+              </Button>
+            ) : (
+              <Button
+                size="large"
+                sx={{ color: "#4ECCA3" }}
+                onClick={() => {
+                  taskCompleteOrIncomplete("taskincomplete", task.id, token);
+                  getProject(task.projectId, token, dispatch);
+                }}
+              >
+                Incomplete
+              </Button>
+            )}
 
-          <Button
-            size="large"
-            sx={{ color: "#4ECCA3" }}
-            onClick={() => {
-              if (window.confirm("You want to delete this task?")) {
-                deleteTask(task.id, token);
-                getMyProfile(dispatch, token);
-              }
-            }}
-          >
-            Delete
-          </Button>
-        </CardActions>
+            <Button
+              sx={{ color: "#4ecca3" }}
+              onClick={() => setIsCommentsOpen((prev) => !prev)}
+            >
+              Comments
+            </Button>
+
+            <Button
+              size="large"
+              sx={{ color: "#4ECCA3" }}
+              onClick={() => {
+                if (window.confirm("You want to delete this task?")) {
+                  deleteTask(task.id, token);
+                  getProject(task.projectId, token, dispatch);
+                }
+              }}
+            >
+              Delete
+            </Button>
+          </CardActions>
+        ) : (
+          <CardActions>
+            {task.isDone === false ? (
+              <Button
+                size="large"
+                sx={{ color: "#4ECCA3" }}
+                onClick={() => {
+                  taskCompleteOrIncomplete("taskcomplete", task.id, token);
+                  getMyProfile(dispatch, token);
+                }}
+              >
+                Complete
+              </Button>
+            ) : (
+              <Button
+                size="large"
+                sx={{ color: "#4ECCA3" }}
+                onClick={() => {
+                  taskCompleteOrIncomplete("taskincomplete", task.id, token);
+                  getMyProfile(dispatch, token);
+                }}
+              >
+                Incomplete
+              </Button>
+            )}
+
+            <Button
+              size="large"
+              sx={{ color: "#4ECCA3" }}
+              onClick={() => {
+                if (window.confirm("You want to delete this task?")) {
+                  deleteTask(task.id, token);
+                  getMyProfile(dispatch, token);
+                }
+              }}
+            >
+              Delete
+            </Button>
+          </CardActions>
+        )}
+        <Comments isOpen={isCommentsOpen} task={task} />
       </Card>
     </Grid>
   );
