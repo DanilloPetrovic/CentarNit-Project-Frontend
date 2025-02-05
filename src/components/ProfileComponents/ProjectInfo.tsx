@@ -27,7 +27,9 @@ const ProjectInfo = ({ user }: ProjectInfoProps) => {
       >
         Projects:{" "}
         <Typography fontSize="1.8rem">
-          {user.projects && user.projects.length}
+          {user.projects &&
+            user.projects.filter((project) => project.isDeleted === false)
+              .length}
         </Typography>
       </Typography>
 
@@ -42,8 +44,9 @@ const ProjectInfo = ({ user }: ProjectInfoProps) => {
         My Projects:{" "}
         <Typography fontSize="1.8rem">
           {user.projects &&
-            user.projects.filter((project) => project.createdById === user.id)
-              .length}
+            user.projects
+              .filter((project) => project.isDeleted === false)
+              .filter((project) => project.createdById === user.id).length}
         </Typography>
       </Typography>
 
@@ -58,8 +61,9 @@ const ProjectInfo = ({ user }: ProjectInfoProps) => {
         Participating Projects:{" "}
         <Typography fontSize="1.8rem">
           {user.projects &&
-            user.projects.filter((project) => project.createdById !== user.id)
-              .length}
+            user.projects
+              .filter((project) => project.isDeleted === false)
+              .filter((project) => project.createdById !== user.id).length}
         </Typography>
       </Typography>
 
@@ -74,7 +78,9 @@ const ProjectInfo = ({ user }: ProjectInfoProps) => {
         Completed Projects:{" "}
         <Typography fontSize="1.8rem">
           {user.projects &&
-            user.projects.filter((project) => project.isDone === true).length}
+            user.projects
+              .filter((project) => project.isDeleted === false)
+              .filter((project) => project.isDone === true).length}
         </Typography>
       </Typography>
     </Box>

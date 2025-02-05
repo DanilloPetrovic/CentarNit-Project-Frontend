@@ -55,6 +55,7 @@ const SingleProjectButtons = ({ user, project, allUsers }: propType) => {
               onClose={() => setIsCreateTaskOpen(false)}
               token={token}
               projectId={project.id}
+              project={project}
             />
           ) : null}
 

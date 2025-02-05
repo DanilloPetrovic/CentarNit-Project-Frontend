@@ -1,11 +1,20 @@
 import axios from "axios";
 
-interface valuesType {
+export interface valuesType {
   title: string;
   description: string;
   priority: string;
   dueDate: string | null;
   userId: number | null;
+}
+
+export interface valuesProjectType {
+  title: string;
+  description: string;
+  priority: string;
+  dueDate: string | null;
+  userId: number | null;
+  projectId: number | null;
 }
 
 export const createTask = async (values: valuesType, token: string) => {

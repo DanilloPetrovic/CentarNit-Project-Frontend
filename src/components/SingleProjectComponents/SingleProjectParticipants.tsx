@@ -4,6 +4,8 @@ import Modal from "../Modal";
 import { Project, User } from "../../interfaces/interfaces";
 import { useFormik } from "formik";
 import { changeParticipants } from "../../pages/Project/ProjectFunctionts";
+import { getProject } from "../../pages/SingleProject/SingleProjectFunctions";
+import { useDispatch } from "react-redux";
 
 interface TaskFormProps {
   user: User | null;
@@ -23,6 +25,7 @@ const SingleProjectParticipants = ({
   allUsers,
 }: TaskFormProps) => {
   const [search, setSearch] = useState<string>("");
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     enableReinitialize: true,
@@ -37,12 +40,16 @@ const SingleProjectParticipants = ({
           const added = formik.values.participants.filter(
             (user) => !ids.includes(user.id)
           );
-          const removed = ids.filter(
-            (id) => !formik.values.participants.some((user) => user.id === id)
-          );
+          const removed = ids
+            .filter(
+              (id) => !formik.values.participants.some((user) => user.id === id)
+            )
+            .filter((id): id is number => id !== null);
+
           const addedIds = added.map((added) => added.id);
 
           await changeParticipants(addedIds, removed, token, project.id);
+          await getProject(project.id, token, dispatch);
 
           onClose();
           formik.resetForm;

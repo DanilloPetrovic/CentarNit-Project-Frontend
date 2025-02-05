@@ -37,6 +37,7 @@ export interface Project {
   createdById: number;
   updatedAt: string;
   tasks: Task[];
+  isDeleted: boolean;
 }
 
 export interface Comment {
